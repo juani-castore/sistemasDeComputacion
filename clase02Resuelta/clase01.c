@@ -1,17 +1,43 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 // usar make para compilar
 
 // correr el siguiente comando para chequear que no esten perdiendo memoria
 // valgrind --leak-check=full --show-leak-kinds=all -v ./clase01.out
 
-
 /**********Ejercicio 1**********/
 char* superConcatenate(char* a[], int size) {
-    //COMPLETAR
-    return NULL;
+     //COMPLETAR
+    int i = 0;
+    int totalLen = 0;
+    int j;
+    int resIter = 0;
+    while (i < size)
+    {
+        j = 0;
+        while (a[i][j]!= 0)
+        {
+            totalLen++;
+            j++;
+        }
+        i++;
+    }
+    char* res = (char*)malloc(sizeof(char) * (totalLen + 1));
+    i = 0;
+    while (i < size)
+    {
+        j = 0;
+        while (a[i][j]!= 0)
+        {
+            res[resIter] = a[i][j];
+            j++;
+            resIter++;
+        }
+        i++;
+    }
+    res[totalLen] = '\0';
+    return res;
 }
 
 //---------------auxiliares Ejercicio 2--------------
@@ -69,7 +95,7 @@ void deleteList(struct list* l){
     }
     free(l);
 }
-// --------------------------------------------------
+
 
 
 /**********Ejercicio 2**********/
@@ -77,12 +103,39 @@ void deleteList(struct list* l){
 // getLast
 void getLast(struct list** twoLists, struct node** a, struct node** b){
     //COMPLETAR
+    struct node *aux0 = twoLists[0]->first;
+    struct node *aux1 = twoLists[1]->first;
+    while(aux0 != NULL && aux0->next != NULL){
+        aux0 = aux0->next;
+    }
+    while(aux1 != NULL && aux1->next != NULL){
+        aux1 = aux1->next;
+    }
+    *a = aux0;
+    *b = aux1;
 }
 
 // getMerge
 struct list* getMerge(struct list** twoLists){
     //COMPLETAR
-    return NULL;
+
+    struct list* res = createList();
+    struct node* aux0 = twoLists[0]->first;
+    struct node* aux1 = twoLists[1]->first;
+
+    while (aux0 != NULL || aux1 != NULL){
+        if (aux0 != NULL){
+            addLast(res, aux0->data);
+            aux0 = aux0->next;
+        }
+        if (aux1 != NULL){
+            addLast(res, aux1->data);
+            aux1 = aux1->next;
+        }
+    }
+    deleteList(twoLists[0]);
+    deleteList(twoLists[1]);
+    return res;
 }
 
 
@@ -129,7 +182,7 @@ int main() {
     printList(mergedList);
     
     //LIBERAR LA MEMORIA QUE SE HAYA PEDIDO
-    
+    deleteList(mergedList);
 
 
 
